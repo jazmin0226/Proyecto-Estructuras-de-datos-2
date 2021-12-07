@@ -1,5 +1,5 @@
 //
-// Created by roxan on 5 dic. 2021.
+// Created by Jazmin Arias Salazar on 5 dic. 2021.
 //
 
 
@@ -64,22 +64,6 @@ string Gestor::eliminarVertice(string vertice) {
     return getGrafo()->eliminarVertice(vertice);
 }
 
-string Gestor::recorridoAnchura(string pOrigen) {
-    return getGrafo()->recorridoAnchura(pOrigen);
-}
-
-string Gestor::recorridoProfundidad(string pOrigen) {
-    return getGrafo()->recorridoProfundidad(pOrigen);
-}
-
-string Gestor::primeroAnchura(string pOrigen, string pDestino) {
-    return getGrafo()->primeroAnchura(pOrigen, pDestino);
-}
-
-string Gestor::primeroProfundidad(string pOrigen, string pDestino) {
-    return getGrafo()->primeroProfundidad(pOrigen, pDestino);
-}
-
 string Gestor::dijkstra(string pOrigen, string pDestino) {
     return getGrafo()->dijkstra(pOrigen, pDestino);
 }
@@ -95,7 +79,7 @@ string Gestor::obtenerUbicacion(string ubic) {
     int num = Validar::stringASCII(ubic);
     Ubicacion * aux = tablaHash->getUbicacion(Validar::hashing(num, TablaHash::MAX),num);
     if (aux != nullptr){
-        res = "La ubicacion " + aux->getNombre() + " si esta disponible \n";
+        res = "La ubicacion " + aux->getNombre() + " si esta disponible ";
     } else {
         res = "No existe ninguna ciudad con el nombre ingresado\n";
     }

@@ -1,5 +1,5 @@
 //
-// Created by roxan on 5 dic. 2021.
+// Created by Jazmin Roxana Arias Salazar on 5 dic. 2021.
 //
 
 
@@ -64,7 +64,6 @@ Vertice *Grafo::getVertice(string &nombre) {
     }
     return aux;
 }
-
 /**
  * Metodo:              getVertice
  * Descripcion:         Metodo sobrecargado que permite obtener el nodo que contiene el índice pasado
@@ -82,7 +81,6 @@ Vertice *Grafo::getVertice(int indice) {
     }
     return aux;
 }
-
 /**
  * Metodo:              insertVertice
  * Descripcion:         Metodo que permite insertar un vertice de forma ordenada
@@ -138,8 +136,6 @@ void Grafo::insertarAlFinal(int indice, string &nombre) {
     setTail(nuevo);
     setTam(getTam() + 1);
 }
-
-
 /**
  * Metodo:              insertaArista
  * Descripcion:         Metodo que permite insertar una arista o arco entre dos vertices
@@ -190,7 +186,6 @@ string Grafo::insertaArista(string &salida, string &llegada, float peso) {
     }
     return res;
 }
-
 /**
  * Metodo:              listaSucesores
  * Descripcion:         Metodo que permite imprimir la lista de adyacencia o sucesores
@@ -224,7 +219,6 @@ string Grafo::listaSucesores() {
     }
     return lista;
 }
-
 /**
  * Metodo:              listaSucesoresXVertice
  * Descripcion:         Metodo que permite imprimir la lista de adyacencia de un vertice específico
@@ -338,9 +332,6 @@ string Grafo::listaPredecesoresXVertice(int indice) {
     }
     return lista;
 }
-
-
-
 /**
  * Metodo:              eliminarArista
  * Descripcion:         Metodo público que permite eliminar un arco o arista entre dos vertices,
@@ -461,316 +452,6 @@ string Grafo::eliminarVertice(Vertice *vert) {
     return res;
 }
 /**
- * Metodo:              recorridoAnchura
- * Descripcion:         Metodo público que permite hacer un recorrido por anchura del grafo
- * @param pOrigen       variable de tipo string que representa el nombre de vertice de origen
- */
-string Grafo::recorridoAnchura(string &pOrigen) {
-    Vertice *origen = getVertice(pOrigen);
-    return recorridoAnchura(origen);
-}
-/**
- * Metodo:              recorridoAnchura
- * Descripcion:         Metodo privado que permite hacer un recorrido por anchura del grafo
- * @param origen        variable de tipo vertice que representa el nombre de vertice de origen
- */
-string Grafo::recorridoAnchura(Vertice *origen) {
-    string res = "";
-    int k = 0;
-    if (origen == nullptr){
-        res = "No exite el vertice";
-    } else {
-        res = "El recorrido en anchura, a partir de: " + origen->getNombre() + " es:\n";
-        int band, band2;
-        stack<string> pilaRes; // pila que contiene las respuestas.
-        Vertice *actual;
-        queue<Vertice*> cola;
-        list<Vertice*> lista;
-        list<Vertice*>::iterator i;
-        cola.push(origen); // se coloca el vertice origen en una cola (el que pasan como parámetro
-        while (!cola.empty()){ // mientras la cola no este vacía
-            band = 0;
-            actual = cola.front();
-            cola.pop(); // desencolamos un vertice, será el vertice actual
-            for (i = lista.begin(); i != lista.end(); i++) {
-                if (*i == actual){
-                    band = 1;
-                }
-            }
-            if (band == 0) { // si el vertice actual no ha sido visitado
-                k += 1;
-                if(k%5 == 0){
-                    res += actual->getNombre() + ",\n"; // procesar el vertice actual
-                } else {
-                    res += actual->getNombre() + ", "; // procesar el vertice actual
-                }
-                lista.push_back(actual); // colocar el vertice en la lista de visitados
-                Arista * aux = actual->getAdy();
-                while (aux != nullptr){
-                    band2 = 0;
-                    for (i = lista.begin(); i != lista.end(); i++) { // para cada vertice que el vertice actual tiene como destino, y que no ha sido visitado
-                        if (aux->getAdy() == *i){
-                            band2 = 1;
-                        }
-                    }
-                    if (band2 == 0){ // encolar el vertice
-                        cola.push(aux->getAdy());
-                    }
-                    aux = aux->getSig();
-                }
-            }
-        }
-    }
-    return res + "\n";
-}
-/**
- * Metodo:              recorridoProfundidad
- * Descripcion:         Metodo público que permite hacer un recorrido en profundidad del grafo
- * recibiendo como parámetro el nombre del vertice de origen
- * @param pOrigen       variable de tipo string que representa el nombre del vertice de origen
- */
-string Grafo::recorridoProfundidad(string &pOrigen) {
-    Vertice *origen = getVertice(pOrigen);
-    return recorridoProfundidad(origen);
-}
-/**
- * Metodo:              recorridoProfundidad
- * Descripcion:         Metodo privado que permite hacer un recorrido en profundidad del grafo
- * recibiendo como parámetro el vertice de origen
- * @param origen        variable de tipo vertice que representa el nombre del vertice de origen
- */
-string Grafo::recorridoProfundidad(Vertice *origen) {
-    string res = "";
-    int k = 0;
-    if (origen == nullptr){
-        res = "No exite el vertice";
-    } else {
-        res = "El recorrido en profundidad, a partir de: " + origen->getNombre() + " es:\n";
-        int band, band2;
-        Vertice *actual;
-        stack<Vertice*> pila;
-        list<Vertice*> lista;
-        list<Vertice*>::iterator i; // iterador para la lista
-        pila.push(origen); // se coloca el vertice origen en una pila
-        while (!pila.empty()){ // mientras la pila no este vacía:
-            band = 0;
-            actual = pila.top();
-            pila.pop(); // desepilar el vertice, será el vertice actual
-            for (i = lista.begin(); i != lista.end(); i++) { // si el vertice actual no ha sido visitado o está en la lista
-                if (*i == actual){
-                    band = 1;
-                }
-            }
-            if (band == 0){ // si el vertice actual no ha sido visitado:
-                k += 1;
-                if(k%5 == 0){
-                    res += actual->getNombre() + ",\n"; // se "procesa" el vertice actual
-                } else {
-                    res += actual->getNombre() + ", "; // se "procesa" el vertice actual
-                }
-                lista.push_back(actual); // se coloca el vertice actual en la lista de visitados
-                Arista *aux = actual->getAdy(); // se va a ubicar en la primera arista del vertice actual
-                while (aux != nullptr){
-                    band2 = 0;
-                    for (i = lista.begin(); i != lista.end(); i++) {
-                        if (*i == aux->getAdy()) {
-                            band2 = 1;
-                        }
-                    }
-                    if (band2 == 0){ // para cada vertice que el vertice actual tiene como destino, y que no ha sido visitado.
-                        pila.push(aux->getAdy()); // apilar el vertice
-                    }
-                    aux = aux->getSig();
-                }
-            }
-        }
-    }
-    return res + "\n";
-}
-/**
- * Metodo:              primeroAnchura
- * Descripcion:         Metodo público que permite hacer un recorrido en anchura del grafo
- * recibiendo como parámetros dos string del nombre de los vertices de origen y destino
- * @param pOrigen       variable de tipo string que representa el nombre del vertice de origen
- * @param pDestino      variable de tipo string que representa el nombre del vertice de destino
- */
-string Grafo::primeroAnchura(string &pOrigen, string &pDestino) {
-    Vertice *origen = getVertice(pOrigen);
-    Vertice *destino = getVertice(pDestino);
-    return primeroAnchura(origen, destino);
-}
-/**
- * Metodo:              primeroAnchura
- * Descripcion:         Metodo provado que permite hacer un recorrido en anchura del grafo
- * recibiendo como parámetros dos variable de tipo vertice que representan los vertices de origen y destino
- * @param origen        variable de tipo vertice que representa el vertice de origen
- * @param destino       variable de tipo vertice que representa el vertice de destino
- */
-string Grafo::primeroAnchura(Vertice *origen, Vertice *destino) {
-    string res = "";
-    if (origen == nullptr || destino == nullptr){
-        res = "El origen o destino no existen";
-    } else {
-        int band, band2, band3 = 0, k = 0;
-        Vertice *verticeActual, *destinoActual;
-        Arista *aux;
-        typedef pair<Vertice*, Vertice*> VerticeVertice; // pila de parejas de vertices
-        queue<Vertice*> cola;
-        stack<VerticeVertice> pila; // inicializar una pila que almacene parejas de datos origen-destino
-        stack<string> pilaRes; // pila que contiene las respuestas.
-        list<Vertice*> lista;
-        list<Vertice*>::iterator i;
-        cola.push(origen); // colocar el vertice origen en una cola
-        while (!cola.empty()){ // mientras la cola no este vacía
-            band = 0;
-            verticeActual = cola.front();
-            cola.pop(); // desencolar un vertice, será el vertice actual
-            for (i = lista.begin(); i != lista.end(); i++) {
-                if (verticeActual == *i) {
-                    band =1;
-                }
-            }
-            if (band == 0){ //si el vertice actual no ha sido visitado:
-                // mostrar la ruta encontrada
-                if (verticeActual == destino){ // si el vertice actual es igual al vertice destino:
-                    band3 = 1;
-                    destinoActual = destino; // el vertice destino se convierte en destino actual
-                    while (!pila.empty()){ // mientras la pila no este vacía
-//                        res += destinoActual->getNombre() + "<-"; // imprimir el destino actual; al reves porque en la pila se saca al reves
-                        pilaRes.push(destinoActual->getNombre());
-                        while (!pila.empty() && pila.top().second != destinoActual){ // mientras la pila no este vacía y el vertice destino en el tope de la pila sea distinto del destino actual
-                            pila.pop(); // desapilar
-                        }
-                        if (!pila.empty()){ // si la pila no está vacía
-                            destinoActual = pila.top().first; // el vertice origen en el tope de la pila se convierte en el destino actual
-                        }
-                    }
-//                    break;  // terminar
-                }
-                lista.push_back(verticeActual); // colocar el vertice actual en la lista de visitados
-                aux = verticeActual->getAdy();
-                while (aux != nullptr){
-                    band2 = 0;
-                    for (i = lista.begin(); i != lista.end(); i++){
-                        if (aux->getAdy() == *i){
-                            band2 = 1;
-                        }
-                    }
-                    if (band2 == 0){ // para cada vertice que el vertice actual tiene como destino, y que no ha sido visitado
-                        cola.push(aux->getAdy());
-                        pila.push(VerticeVertice(verticeActual, aux->getAdy())); // apilar la pareja: vertice actual y vertice destino
-                    }
-                    aux = aux->getSig(); // encolar el vertice
-                }
-            }
-        }
-        if (band3 == 0){ // si la cola se vacio sin encontrar el destino
-            // no existe una ruta entre esos vertices
-            res = "No hay ruta entre esos dos vertices";
-        }
-        while (!pilaRes.empty()){
-            if (k > 0) {
-                res += "->";
-            }
-            res += pilaRes.top();
-            k += 1;
-            pilaRes.pop();
-        }
-    }
-    return res + "\n";
-}
-/**
- * Metodo:              primeroProfundidad
- * Descripcion:         Metodo público que permite hacer un recorrido en profundidad
- * estableciendo la primera opcion.
- * @param pOrigen       variable de tipo string que representa el nombre del vertice de origen
- * @param pDestino      variable de tipo string que representa el nombre del vertice de destino
- */
-string Grafo::primeroProfundidad(string &pOrigen, string &pDestino) {
-    Vertice *origen = getVertice(pOrigen);
-    Vertice *destino = getVertice(pDestino);
-    return primeroProfundidad(origen, destino);
-}
-/**
- * Metodo:              primeroProfundidad
- * Descripcion:         Metodo privado que permite hacer un recorrido en profundidad
- * estableciendo la primera opcion.
- * @param origen        variable de tipo vertice que representa el vertice de origen
- * @param destino       variable de tipo vertice que representa el vertice de destino
- */
-string Grafo::primeroProfundidad(Vertice *origen, Vertice *destino) {
-    string res = "";
-    if (origen == nullptr || destino == nullptr){
-        res = "El origen o destino no existen";
-    } else {
-        int band, band2, band3 = 0, k = 0;
-        Vertice *verticeActual, *destinoActual;
-        Arista *aux;
-        typedef pair<Vertice*, Vertice*> parVertices;
-        stack<Vertice*> pila;
-        list<Vertice*> lista;
-        stack<string> pilaRes; // pila que contiene las respuestas.
-        stack<parVertices> pilaPar; // inicializar una pila que almacene parejas de datos origen-destino
-        list<Vertice*>::iterator i; // se declara un iterador para la lista
-        pila.push(origen); // colocar el vertice origen en una pila
-        while (!pila.empty()){ // mientras la pila no este vacía
-            band = 0;
-            verticeActual = pila.top(); // almacenamos el tope de la fila
-            pila.pop(); // desapilar un vertice, seá el vertice actual
-            for (i = lista.begin(); i != lista.end(); i++){
-                if (verticeActual == *i){
-                    band = 1;
-                }
-            }
-            if (band == 0){ // si el vertice actual no ha sido visitado (no encontro ese vertice en la lista de visitados
-                if (verticeActual == destino){ // si el vertice actual es igual al vertice destino
-                    band3 = 1;
-                    // mostrar la ruta encontrada
-                    destinoActual = destino; // el vertice destino se convierte en destino actual
-                    while (!pilaPar.empty()){ // mientras la pila no este vacía
-//                        res += destinoActual->getNombre() + "<-"; // imprimir el destino actual
-                        pilaRes.push(destinoActual->getNombre());
-                        while (!pilaPar.empty() && pilaPar.top().second != destinoActual){ // mientras la pila no este vacía y el vertice destino en el tipo de la pila sea distinto del destino actual
-                            pilaPar.pop(); // desapilar
-                        }
-                        if (!pilaPar.empty()){ // si la pila no está vacía
-                            destinoActual = pilaPar.top().first; // el vertice origen en el tope de la pila se convierte en el destino actual
-                        }
-                    }
-                    break; // terminar
-                }
-                lista.push_back(verticeActual); // colocar el vertice actual en la lista de visitados
-                aux = verticeActual->getAdy();
-                while (aux != nullptr){
-                    band2 = 0;
-                    for (i = lista.begin(); i != lista.end(); i++){
-                        if (aux->getAdy() == *i){
-                            band2 = 1;
-                        }
-                    }
-                    if (band2 == 0){ // para cada vertice que el vertice actual tiene como destino, y que no ha sido visitado
-                        pila.push(aux->getAdy()); // apilar el vertice
-                        pilaPar.push(parVertices(verticeActual, aux->getAdy())); // apilar la pareja: vertice actual y vertice destino
-                    }
-                    aux = aux->getSig();
-                }
-            }
-        }
-        if (band3 == 0){ // si la pila se vacío sin encontrar el destino
-            res = "No hay ruta entre esos dos vertices"; // no existe una ruta entre esos vertices.
-        }
-        while (!pilaRes.empty()){
-            if (k > 0) {
-                res += "->";
-            }
-            res += pilaRes.top();
-            k += 1;
-            pilaRes.pop();
-        }
-    }
-    return res + "\n";
-}
-/**
  * Metodo:              dijkstra
  * Descripcion:         Metodo público que permite generar la ruta de menor costo.
  * @param pOrigen       variable de tipo string que representa el nombre del vertice de origen
@@ -875,8 +556,6 @@ string Grafo::dijkstra(Vertice *origen, Vertice *destino) {
     }
     return res + "\n";
 }
-
-
 /**
  * Metodo:              comparacion
  * Descripcion:         Metodo que permite comparar costos
